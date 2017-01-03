@@ -1,0 +1,10 @@
+<form>
+  <md-select placeholder="Seleccione categoría" [(ngModel)]="selectedCategory" name="category">
+    <md-option *ngFor="let category of categories" [value]="category.value">
+      {{category.viewValue}}
+    </md-option>
+  </md-select>
+
+  <p> Selected value: {{selectedCategory}} </p>
+</form>
+
