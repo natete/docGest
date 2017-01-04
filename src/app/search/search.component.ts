@@ -7,6 +7,9 @@ import { Component, OnInit } from "@angular/core";
 })
 export class SearchComponent implements OnInit {
 
+  query: any = {
+    filters: []
+  };
   selectedCategory: string = '';
   categories = [
     {
@@ -29,4 +32,7 @@ export class SearchComponent implements OnInit {
   ngOnInit() {
   }
 
+  addFilter(): void {
+    this.query.filters.push({});
+  }
 }

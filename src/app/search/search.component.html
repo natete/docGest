@@ -1,10 +1,43 @@
-<form>
-  <md-select placeholder="Seleccione categoría" [(ngModel)]="selectedCategory" name="category">
-    <md-option *ngFor="let category of categories" [value]="category.value">
-      {{category.viewValue}}
-    </md-option>
-  </md-select>
+<div class="container">
+  <form>
+    <div class="flex-with-flex-end">
+      <md-input-container class="fill-remaining-space right-margin">
+        <input md-input placeholder="Título" [(ngModel)]="query.title" name="title">
+      </md-input-container>
+      <button md-mini-fab (click)="addFilter()">
+        <md-icon>search</md-icon>
+      </button>
+    </div>
 
-  <p> Selected value: {{selectedCategory}} </p>
-</form>
+    <md-grid-list cols="2" rowHeight="56px" gutterSize="5px">
+      <md-grid-tile [colspan]="1">
+        <md-input-container class="full-width">
+          <input type="date" md-input placeholder="Desde">
+        </md-input-container>
+      </md-grid-tile>
+
+      <md-grid-tile [colspan]="1">
+        <md-input-container class="full-width">
+          <input type="date" md-input placeholder="Desde">
+        </md-input-container>
+      </md-grid-tile>
+    </md-grid-list>
+
+    <div class="flex-with-flex-end">
+      <span>Filtros</span>
+      <span class="fill-remaining-space"></span>
+      <button md-mini-fab (click)="addFilter()">
+        <md-icon>add</md-icon>
+      </button>
+    </div>
+    <div *ngFor="let filter of query.filters">
+      <md-select placeholder="Seleccione categoría" [(ngModel)]="filter.selectedCategory" name="category">
+        <md-option *ngFor="let category of categories" [value]="category.value">
+          {{category.viewValue}}
+        </md-option>
+      </md-select>
+    </div>
+  </form>
+</div>
+
 
