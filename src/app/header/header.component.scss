@@ -1,3 +1,5 @@
+$profile-image-size: 50px;
+
 .fill-remaining-space {
   // This fills the remaining space, by using flexbox.
   // Every toolbar row uses a flexbox row layout.
@@ -7,4 +9,24 @@
 button {
   height: 100%;
   margin: 0 10px;
+
+  &.active {
+    border-bottom: 2px solid deeppink;
+  }
+}
+
+.profile-menu-button {
+
+  width: $profile-image-size;
+  height: $profile-image-size;
+
+  .profile-img {
+    height: $profile-image-size;
+    width: $profile-image-size;
+    border-radius: 50%;
+  }
+}
+
+button[md-menu-item] {
+  width: auto;
 }

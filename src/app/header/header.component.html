@@ -1,13 +1,23 @@
 <md-toolbar color="primary" class="md-elevation-z6">
   <span>DocGest</span>
 
-  <button md-button>Buscar</button>
+  <button routerLink="/search" routerLinkActive="active" *ngIf="user" md-button>Buscar</button>
 
-  <button md-button>Explorar</button>
+  <button *ngIf="user" md-button>Explorar</button>
 
   <!-- This fills the remaining space of the current row -->
   <span class="fill-remaining-space"></span>
 
-  <button md-button>Configurar</button>
+  <button routerLink="/categories" routerLinkActive="active" *ngIf="user" md-button>Categorías</button>
+
+  <button *ngIf="user" md-icon-button [mdMenuTriggerFor]="menu" class="profile-menu-button">
+    <img class="profile-img" [src]="user.photoUrl" alt="Profile Image">
+  </button>
+  <md-menu #menu="mdMenu">
+    <button md-menu-item (click)="logout()">
+      <md-icon>exit_to_app</md-icon>
+      <span>Salir</span>
+    </button>
+  </md-menu>
 
 </md-toolbar>

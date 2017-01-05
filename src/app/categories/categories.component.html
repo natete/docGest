@@ -1,0 +1,19 @@
+<md-chip-list class="md-chip-list-stacked chip-list">
+  <div class="chip-container">
+    <md-chip class="inline-chip" selected="true" color="primary">/</md-chip>
+
+    <span class="buttons-container">
+      <button class="xs-fab" md-mini-fab (click)="addCategory()">
+        <md-icon>add</md-icon>
+      </button>
+    </span>
+  </div>
+
+  <br>
+
+  <app-category-tree *ngFor="let category of categoryTree | async"
+                     [category]="category"
+                     (addCategory)="addCategory($event)">
+  </app-category-tree>
+
+</md-chip-list>

@@ -6,14 +6,25 @@ body {
   margin: 0;
 }
 
+article,
+aside,
+content,
+footer,
+header,
+nav,
+section
 app-search {
   display: block;
-  margin: 30px;
 }
 
-app-footer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;;
+button[md-mini-fab].xs-fab {
+  height: 32px;
+  width: 32px;
+  vertical-align: middle;
+
+  md-icon {
+    height: 16px;
+    line-height: 16px;
+    color: white;
+  }
 }

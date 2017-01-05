@@ -1,0 +1,29 @@
+<div class="chip-container">
+  <md-chip class="inline-chip"
+           selected="true"
+           color="primary">
+    {{category.name}}
+  </md-chip>
+
+  <span class="buttons-container">
+    <button class="xs-fab" md-mini-fab (click)="add()">
+      <md-icon>add</md-icon>
+    </button>
+
+    <button class="xs-fab" md-mini-fab>
+      <md-icon>edit</md-icon>
+    </button>
+
+    <button class="xs-fab" md-mini-fab>
+      <md-icon>delete</md-icon>
+    </button>
+  </span>
+
+</div>
+
+<br>
+
+<app-category-tree *ngFor="let child of children"
+                   [category]="child"
+                   (addCategory)="onAdd($event)">
+</app-category-tree>

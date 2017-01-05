@@ -1,0 +1,10 @@
+<h1 md-dialog-title>Nueva categoría</h1>
+<div md-dialog-content>
+  <md-input-container class="example-full-width">
+    <input md-input placeholder="Nombre" [(ngModel)]="name" name="name">
+  </md-input-container>
+</div>
+<div md-dialog-actions>
+  <button md-raised-button (click)="save()" color="accent">Guardar</button>
+  <button md-button (click)="cancel()">Cancelar</button>
+</div>

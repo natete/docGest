@@ -1,0 +1,38 @@
+$chip-margin: 15px;
+$elements: 15;
+
+.chip-container {
+  margin-bottom: 15px;
+  display: inline-block;
+
+  &:hover {
+    span {
+      display: inline;
+    }
+  }
+
+  .buttons-container {
+    display: none;
+  }
+}
+
+md-chip.inline-chip {
+  display: inline-block !important;
+  min-width: 50px;
+  text-align: center;
+  font-weight: bold;
+  cursor: default;
+}
+
+//.chip-container {
+//  @for $i from 1 to $elements {
+//    &:nth-child(#{$i}) {
+//      margin-left: calc(#{$chip-margin} * #{$i});
+//    }
+//  }
+//}
+
+app-category-tree {
+  display: inline-block;
+  margin-left: $chip-margin;
+}

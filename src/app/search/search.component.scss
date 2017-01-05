@@ -1,27 +1,22 @@
-.container {
-  max-width: 800px;
-  margin: 30px auto;
+.full-width {
+  width: 100%;
+}
 
-  .full-width {
-    width: 100%;
+.fill-remaining-space {
+  // This fills the remaining space, by using flexbox.
+  // Every toolbar row uses a flexbox row layout.
+  flex: 1 1 auto;
+
+  &.right-margin {
+    margin-right: 15px;
   }
+}
 
-  .fill-remaining-space {
-    // This fills the remaining space, by using flexbox.
-    // Every toolbar row uses a flexbox row layout.
-    flex: 1 1 auto;
+.flex-with-flex-end {
+  display: flex;
+  align-items: flex-end;
+}
 
-    &.right-margin {
-      margin-right: 15px;
-    }
-  }
-
-  .flex-with-flex-end {
-    display: flex;
-    align-items: flex-end;
-  }
-
-  md-icon {
-    color: white;
-  }
+md-icon {
+  color: white;
 }

@@ -1,0 +1,30 @@
+.chip-container {
+  margin-bottom: 15px;
+  display: inline-block;
+
+  &:hover {
+    span {
+      display: inline;
+    }
+  }
+
+  .buttons-container {
+    display: none;
+  }
+}
+
+md-chip-list.chip-list {
+
+  md-chip.inline-chip {
+    display: inline-block;
+    min-width: 50px;
+    text-align: center;
+    font-weight: bold;
+    cursor: default;
+  }
+}
+
+app-category-tree {
+  display: inline-block;
+  margin-left: 15px;
+}
