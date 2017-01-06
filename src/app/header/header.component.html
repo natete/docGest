@@ -14,6 +14,10 @@
     <img class="profile-img" [src]="user.photoUrl" alt="Profile Image">
   </button>
   <md-menu #menu="mdMenu">
+    <button md-menu-item routerLink="/configuration">
+      <md-icon>settings</md-icon>
+      <span>Configurar</span>
+    </button>
     <button md-menu-item (click)="logout()">
       <md-icon>exit_to_app</md-icon>
       <span>Salir</span>

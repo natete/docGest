@@ -16,7 +16,10 @@
     ],
     "types": [
       "firebase",
-      "hammerjs"
+      "hammerjs",
+      "gapi",
+      "gapi.auth2",
+      "gapi.client"
     ]
   }
 }

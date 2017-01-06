@@ -7,6 +7,7 @@ import { FooterComponent } from './footer/footer.component';
 import { CoreModule } from './core/core.module';
 import { LoginComponent } from './login/login.component';
 import { CategoriesModule } from './categories/categories.module';
+import { ConfigurationModule } from './configuration/configuration.module';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CategoriesModule } from './categories/categories.module';
   ],
   imports: [
     CategoriesModule,
+    ConfigurationModule,
     CoreModule,
     MaterialModule.forRoot()
   ],

@@ -34,6 +34,8 @@
     "@angular/compiler-cli": "^2.3.1",
     "@angular/tsc-wrapped": "^0.5.0",
     "@types/firebase": "^2.4.30",
+    "@types/gapi": "^0.0.30",
+    "@types/gapi.auth2": "^0.0.32",
     "@types/hammerjs": "^2.0.34",
     "@types/jasmine": "2.5.38",
     "@types/node": "^6.0.42",

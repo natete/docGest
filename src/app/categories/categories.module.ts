@@ -6,10 +6,12 @@ import { CategoriesComponent } from './categories.component';
 import { CategoryTreeComponent } from './category-tree/category-tree.component';
 import { CategoryDialogComponent } from './category-dialog/category-dialog.component';
 import { FormsModule } from '@angular/forms';
+import { DatabaseModule } from '../shared/database/database.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    DatabaseModule,
     FormsModule,
     MaterialModule.forRoot()
   ],
