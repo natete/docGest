@@ -1,14 +1,16 @@
 export class GdriveFile {
   id: string;
-  mimeType: string;
   name: string;
-  parentId: string;
+  mimeType?: string;
+  parentId?: string;
+  parentName?: string;
   selected?: boolean;
 
-  constructor(file: gapi.client.drive.File, parentId: string) {
+  constructor(file: gapi.client.drive.File, parent?: gapi.client.drive.File) {
     this.id = file.id;
-    this.mimeType = file.mimeType;
     this.name = file.name;
-    this.parentId = parentId;
+    this.mimeType = file.mimeType ? file.mimeType : null;
+    this.parentId = parent ? parent.id : null;
+    this.parentName = parent ? parent.name : null;
   }
 }

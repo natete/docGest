@@ -1,11 +1,5 @@
 content {
   max-width: 800px;
   margin: 30px auto;
-}
-
-app-footer {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;;
+  min-height: calc(100vh - 188px);
 }

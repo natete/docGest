@@ -1,38 +1,9 @@
 [md-dialog-content] {
   height: calc(75vh - 152px);
   background-color: #EEEEEE;
-
-  md-progress-spinner {
-    position: absolute;
-    top: calc(50% - 50px);
-    left: calc(50% - 50px);
-  }
-
-  md-grid-tile {
-    margin-bottom: 5px;
-  }
-  .folder-card {
-    font-weight: lighter;
-    padding: 5px;
-    width: 100%;
-    cursor: default;
-
-    &.selected {
-      background-color: #536DFE;
-      color: white;
-
-      md-icon {
-        color: white;
-      }
-    }
-
-    md-icon {
-      color: gray;
-      vertical-align: bottom;
-      margin-right: 10px;
-      cursor: default;
-    }
-  }
+  position: relative;
+  margin: 0;
+  padding: 0;
 }
 
 [md-dialog-actions] {

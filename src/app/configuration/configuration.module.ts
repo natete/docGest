@@ -7,6 +7,7 @@ import { ConfigurationComponent } from './configuration.component';
 import { DatabaseModule } from '../shared/database/database.module';
 import { GdriveModule } from '../shared/gdrive/gdrive.module';
 import { RootFolderDialogComponent } from './root-folder-dialog/root-folder-dialog.component';
+import { NavigatorModule } from '../shared/navigator/navigator.module';
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import { RootFolderDialogComponent } from './root-folder-dialog/root-folder-dial
     DatabaseModule,
     GdriveModule,
     FormsModule,
-    MaterialModule.forRoot()
+    MaterialModule.forRoot(),
+    NavigatorModule
   ],
   declarations: [
     ConfigurationComponent,

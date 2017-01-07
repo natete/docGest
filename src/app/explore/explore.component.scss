@@ -1,0 +1,22 @@
+$title-font-size: 22px;
+$title-margin: 20px;
+
+.opened-folder {
+  font-size: $title-font-size;
+  margin: 0 0 $title-margin 0;
+}
+
+.explorer-container {
+  height: calc(100% - (#{$title-font-size} + #{$title-margin}));
+
+  md-grid-tile {
+    overflow-y: auto;
+  }
+}
+
+[md-fab] {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  color: white;
+}

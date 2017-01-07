@@ -1,11 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
 @import '~@angular/material/core/theming/prebuilt/indigo-pink';
 
+$background-color: #EEEEEE;
+
 body {
   font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
   margin: 0;
   user-select: none;
-  background-color: #EEEEEE;
+  background-color: $background-color;
 }
 
 article,
@@ -19,8 +21,26 @@ app-search {
   display: block;
 }
 
+content {
+  position: relative;
+}
+
 app-configuration {
   display: flex;
+}
+
+app-explore {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+app-navigator {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
 }
 
 button[md-mini-fab].xs-fab {
@@ -39,4 +59,8 @@ button[md-mini-fab].xs-fab {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+md-dialog-container {
+  background-color: $background-color;
 }

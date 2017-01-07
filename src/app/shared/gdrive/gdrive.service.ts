@@ -5,6 +5,7 @@ import { GdriveFile } from './gdrive-file';
 const CLIENT_ID = '714707421933-9nqjome3tjml56epmet0c860c43tbjnt.apps.googleusercontent.com';
 const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
 const FOLDER_MIME_TYPE = 'mimeType=\'application/vnd.google-apps.folder\'';
+const FILE_MIME_TYPE = 'mimeType!=\'application/vnd.google-apps.folder\'';
 const FOLDER_PARENT = '\'{0}\' in parents';
 const ROOT_FOLDER = 'root';
 
@@ -45,9 +46,9 @@ export class GdriveService {
   getSubFolders(folder?: GdriveFile): Observable<GdriveFile[]> {
     const folders: Subject<gapi.client.drive.File[]> = new Subject<gapi.client.drive.File[]>();
 
-    const parentId = this.getParentId(folder);
+    const openedFolder: GdriveFile = this.getOpenedFolderId(folder);
 
-    const q = this.getQuery(folder);
+    const q = this.getFolderQuery(folder);
 
     const params = {
       q: q,
@@ -59,33 +60,53 @@ export class GdriveService {
     return folders
         .asObservable()
         .map(folders => {
-          return folder && folder.id !== ROOT_FOLDER ? this.getFolderListWithParent(parentId, folders) : folders;
-        })
-        .map(folders => {
-          return this.mapToGdriveFiles(folders, parentId);
+          return this.mapToGdriveFiles(folders, openedFolder);
         });
   }
 
-  private getParentId(parent?: GdriveFile) {
-    return parent ? parent.parentId : ROOT_FOLDER;
+  getFiles(folder: GdriveFile): Observable<GdriveFile[]> {
+    const files: Subject<gapi.client.drive.File[]> = new Subject<gapi.client.drive.File[]>();
+
+    const q = this.getFileQuery(folder);
+
+    const params = {
+      q: q,
+      orderBy: 'name'
+    };
+
+    gapi.client.drive.files.list(params).execute(response => files.next(response.result.files || []));
+
+    return files
+        .asObservable()
+        .map(files => this.mapToGdriveFiles(files));
   }
 
-  private getQuery(parent?: gapi.client.drive.File) {
+  private getOpenedFolderId(openedFolder?: GdriveFile): GdriveFile {
+    if (openedFolder) {
+      return new GdriveFile({ id: openedFolder.id, name: openedFolder.name });
+    } else {
+      return new GdriveFile({ id: ROOT_FOLDER, name: ROOT_FOLDER });
+    }
+  }
+
+  private getFolderQuery(parentFolder?: gapi.client.drive.File) {
     const queries = [];
     queries.push(FOLDER_MIME_TYPE);
-    queries.push(FOLDER_PARENT.replace('{0}', parent ? parent.id : 'root'));
+    queries.push(FOLDER_PARENT.replace('{0}', parentFolder ? parentFolder.id : 'root'));
 
     return queries.join(' and ');
   }
 
-  private getFolderListWithParent(parentId: string, folders) {
-    const rootFolder = { id: parentId, name: '..' };
+  private getFileQuery(parent: gapi.client.drive.File) {
+    const queries = [];
+    queries.push(FILE_MIME_TYPE);
+    queries.push(FOLDER_PARENT.replace('{0}', parent.id));
 
-    return [rootFolder].concat(folders);
+    return queries.join(' and ');
   }
 
-  private mapToGdriveFiles(folders, parentId: string) {
-    return folders.map(folder => new GdriveFile(folder, parentId));
+  private mapToGdriveFiles(folders, parentFolder?: GdriveFile) {
+    return folders.map(folder => new GdriveFile(folder, parentFolder));
   }
 
   private manageAuth(authResult: GoogleApiOAuth2TokenObject) {

@@ -1,16 +1,16 @@
 /* tslint:disable:no-unused-variable */
 
 import { TestBed, inject } from '@angular/core/testing';
-import { GdriveService } from './gdrive.service';
+import { ExploreService } from './explore.service';
 
-describe('GdriveService', () => {
+describe('ExploreService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [GdriveService]
+      providers: [ExploreService]
     });
   });
 
-  it('should ...', inject([GdriveService], (service: GdriveService) => {
+  it('should ...', inject([ExploreService], (service: ExploreService) => {
     expect(service).toBeTruthy();
   }));
 });

@@ -10,8 +10,8 @@ import { Category } from '../category';
 export class CategoryTreeComponent implements OnInit {
 
   @Input() category: Category;
-  children: Array<Category> = [];
   @Output() addCategory = new EventEmitter();
+  children: Array<Category> = [];
 
   constructor() {
   }
