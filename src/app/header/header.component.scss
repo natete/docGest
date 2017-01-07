@@ -1,32 +1,43 @@
 $profile-image-size: 50px;
 
-.fill-remaining-space {
-  // This fills the remaining space, by using flexbox.
-  // Every toolbar row uses a flexbox row layout.
-  flex: 1 1 auto;
+.app-title {
+  margin-right: 15px;
 }
 
-button {
+.actions-container {
+  display: flex;
+  width: 100%;
   height: 100%;
-  margin: 0 10px;
+  align-items: center;
 
-  &.active {
-    border-bottom: 2px solid deeppink;
+  .fill-remaining-space {
+    // This fills the remaining space, by using flexbox.
+    // Every toolbar row uses a flexbox row layout.
+    flex: 1 1 auto;
   }
-}
 
-.profile-menu-button {
+  button {
+    height: 100%;
+    margin: 0 10px;
 
-  width: $profile-image-size;
-  height: $profile-image-size;
+    &.active {
+      border-bottom: 2px solid deeppink;
+    }
+  }
 
-  .profile-img {
-    height: $profile-image-size;
+  .profile-menu-button {
+
     width: $profile-image-size;
-    border-radius: 50%;
-  }
-}
+    height: $profile-image-size;
 
-button[md-menu-item] {
-  width: auto;
+    .profile-img {
+      height: $profile-image-size;
+      width: $profile-image-size;
+      border-radius: 50%;
+    }
+  }
+
+  button[md-menu-item] {
+    width: auto;
+  }
 }

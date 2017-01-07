@@ -4,6 +4,8 @@
 body {
   font-family: Roboto, Helvetica Neue Light, Helvetica Neue, Helvetica, Arial, Lucida Grande, sans-serif;
   margin: 0;
+  user-select: none;
+  background-color: #EEEEEE;
 }
 
 article,
@@ -17,6 +19,10 @@ app-search {
   display: block;
 }
 
+app-configuration {
+  display: flex;
+}
+
 button[md-mini-fab].xs-fab {
   height: 32px;
   width: 32px;
@@ -27,4 +33,10 @@ button[md-mini-fab].xs-fab {
     line-height: 16px;
     color: white;
   }
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

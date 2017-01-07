@@ -1,0 +1,25 @@
+<h1 md-dialog-title>Seleccione directorio raíz</h1>
+
+<div md-dialog-content>
+  <md-progress-spinner *ngIf="loading" [mode]="'indeterminate'"></md-progress-spinner>
+
+  <md-grid-list cols="4" rowHeight="45px" gutterSize="10px" *ngIf="!loading">
+    <md-grid-tile *ngFor="let folder of folders" [colspan]="1">
+      <md-card class="folder-card text-ellipsis"
+               (click)="toggleSelection(folder)"
+               (dblclick)="openFolder(folder)"
+               [class.selected]="folder.selected">
+        <md-icon>folder</md-icon>
+        {{folder.name}}
+      </md-card>
+    </md-grid-tile>
+    <div *ngIf="folders.length === 0">
+      No hay carpetas.
+    </div>
+  </md-grid-list>
+</div>
+
+<div md-dialog-actions>
+  <button md-raised-button color="accent" (click)="save()" [disabled]="!selectedFolder">Seleccionar</button>
+  <button md-button (click)="cancel()">Cancelar</button>
+</div>

@@ -28,6 +28,6 @@ export class CategoriesService {
       category.namesPath = parent.getFullNamesPath();
     }
 
-    this.categories.push(category.toDbCategory());
+    this.categories.push(category.toDbObject());
   }
 }

@@ -1,0 +1,29 @@
+.authorize-button {
+  margin: 30px auto;
+}
+
+md-grid-list {
+  width: 100%;
+
+  md-grid-tile {
+    padding: 5px;
+  }
+}
+
+md-card {
+  width: 100%;
+  box-sizing: border-box;
+
+  md-card-content {
+    padding: 20px 0;
+
+    md-chip {
+      md-icon {
+        color: white;
+        margin-right: 15px;
+        vertical-align: middle;
+        line-height: 20px;
+      }
+    }
+  }
+}

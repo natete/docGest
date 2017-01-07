@@ -8,19 +8,21 @@ import { CoreModule } from './core/core.module';
 import { LoginComponent } from './login/login.component';
 import { CategoriesModule } from './categories/categories.module';
 import { ConfigurationModule } from './configuration/configuration.module';
+import { ExploreModule } from './explore/explore.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    SearchComponent,
-    HeaderComponent,
     FooterComponent,
-    LoginComponent
+    HeaderComponent,
+    LoginComponent,
+    SearchComponent
   ],
   imports: [
     CategoriesModule,
     ConfigurationModule,
     CoreModule,
+    ExploreModule,
     MaterialModule.forRoot()
   ],
   providers: [],

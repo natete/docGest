@@ -52,6 +52,7 @@
     "reflect-metadata": "^0.1.8",
     "ts-node": "1.2.1",
     "tslint": "^4.0.2",
-    "typescript": "~2.0.3"
+    "typescript": "~2.0.3",
+    "typings": "^2.1.0"
   }
 }

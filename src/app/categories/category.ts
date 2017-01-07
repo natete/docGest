@@ -1,4 +1,6 @@
-export class Category {
+import { Persistible } from '../shared/database/persistible';
+
+export class Category implements Persistible {
   $key?: string;
   name: string;
   path: string = '';
@@ -55,7 +57,7 @@ export class Category {
     return !!this.path;
   }
 
-  toDbCategory(): any {
+  toDbObject(): any {
     return {
       name: this.name,
       path: this.path,
