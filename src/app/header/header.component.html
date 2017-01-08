@@ -2,20 +2,20 @@
   <span class="app-title">DocGest</span>
 
   <div *ngIf="user" class="actions-container">
-    <button routerLink="/search" routerLinkActive="active" md-button>Buscar</button>
+    <button [routerLink]="['/', {outlets: {sidebar: null, primary: 'search'}}]" routerLinkActive="active" md-button>Buscar</button>
 
-    <button routerLink="/explore" routerLinkActive="active" md-button>Explorar</button>
+    <button [routerLink]="['/', {outlets: {sidebar: null, primary: 'explore'}}]" routerLinkActive="active" md-button>Explorar</button>
 
     <!-- This fills the remaining space of the current row -->
     <span class="fill-remaining-space"></span>
 
-    <button routerLink="/categories" routerLinkActive="active" *ngIf="user" md-button>Categorías</button>
+    <button [routerLink]="['/', {outlets: {sidebar: null, primary: 'categories'}}]" routerLinkActive="active" md-button>Categorías</button>
 
     <button *ngIf="user" md-icon-button [mdMenuTriggerFor]="menu" class="profile-menu-button">
       <img class="profile-img" [src]="user.photoUrl" alt="Profile Image">
     </button>
     <md-menu #menu="mdMenu">
-      <button md-menu-item routerLink="/configuration">
+      <button md-menu-item [routerLink]="['/', {outlets: {sidebar: null, primary: 'configuration'}}]">
         <md-icon>settings</md-icon>
         <span>Configurar</span>
       </button>

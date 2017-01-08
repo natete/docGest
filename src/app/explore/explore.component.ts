@@ -2,6 +2,7 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { ExploreService } from './explore.service';
 import { GdriveFile } from '../shared/gdrive/gdrive-file';
 import { SelectionComponent } from '../shared/selection-component';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-explore',
@@ -14,10 +15,11 @@ export class ExploreComponent extends SelectionComponent implements OnInit {
   folders: GdriveFile[];
   files: GdriveFile[];
   loading: boolean = true;
-  // selectedFile: GdriveFile;
 
   constructor(private exploreService: ExploreService,
-              private changeDetector: ChangeDetectorRef) {
+              private changeDetector: ChangeDetectorRef,
+              private router: Router,
+              private route: ActivatedRoute) {
     super();
   }
 
@@ -39,6 +41,8 @@ export class ExploreComponent extends SelectionComponent implements OnInit {
   toggleSelection(item) {
     super.toggleSelection(item);
     this.changeDetector.detectChanges();
+    this.exploreService.setCurrentFile(item);
+    this.router.navigate([{ outlets: { sidebar: ['details', item.id] } }]);
   }
 
   private mapFolderResponse(response) {

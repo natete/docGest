@@ -8,7 +8,8 @@ if (environment.production) {
   enableProdMode();
 }
 
-gapi.client.load('drive', 'v3', function () {
-  platformBrowserDynamic().bootstrapModule(AppModule);
-});
+gapi.client.load('drive', 'v3', bootstrapApplication);
 
+function bootstrapApplication() {
+  platformBrowserDynamic().bootstrapModule(AppModule);
+}

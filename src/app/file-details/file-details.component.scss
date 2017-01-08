@@ -1,0 +1,24 @@
+button.close-button {
+  min-width: 0;
+  color: gray;
+}
+
+.details-content {
+  padding: 10px;
+  font-weight: lighter;
+
+  .date-container {
+    line-height: 56px;
+    margin-bottom: 50px;
+
+    .date-value {
+      margin-right: 20px;
+      font-size: 14px;
+    }
+  }
+
+  .title {
+    font-size: 14px;
+  }
+;
+}

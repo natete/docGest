@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, ReplaySubject } from 'rxjs';
 import { GdriveFile } from './gdrive-file';
 
 const CLIENT_ID = '714707421933-9nqjome3tjml56epmet0c860c43tbjnt.apps.googleusercontent.com';
@@ -13,6 +13,7 @@ const ROOT_FOLDER = 'root';
 export class GdriveService {
 
   private authState: Subject<GoogleApiOAuth2TokenObject> = new Subject<GoogleApiOAuth2TokenObject>();
+  private currentFile: GdriveFile;
 
   constructor() {
   }
@@ -79,6 +80,27 @@ export class GdriveService {
     return files
         .asObservable()
         .map(files => this.mapToGdriveFiles(files));
+  }
+
+  setCurrentFile(file: GdriveFile): void {
+    this.currentFile = file;
+  }
+
+  getFile(fileId: string): Observable<GdriveFile> {
+    const result = new ReplaySubject<GdriveFile>(1);
+
+    if (this.currentFile && this.currentFile.id === fileId) {
+      result.next(this.currentFile);
+    } else {
+      const params = {
+        fileId: fileId,
+        fields: 'id,name,mimeType,thumbnailLink'
+      };
+
+      gapi.client.drive.files.get(params).execute(response => result.next(new GdriveFile(response.result)));
+    }
+
+    return result.asObservable();
   }
 
   private getOpenedFolderId(openedFolder?: GdriveFile): GdriveFile {

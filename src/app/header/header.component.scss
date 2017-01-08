@@ -10,12 +10,6 @@ $profile-image-size: 50px;
   height: 100%;
   align-items: center;
 
-  .fill-remaining-space {
-    // This fills the remaining space, by using flexbox.
-    // Every toolbar row uses a flexbox row layout.
-    flex: 1 1 auto;
-  }
-
   button {
     height: 100%;
     margin: 0 10px;

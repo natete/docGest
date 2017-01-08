@@ -29,6 +29,10 @@ export class ExploreService {
     this.updateOpenedFolder(folder);
   }
 
+  setCurrentFile(file: GdriveFile) {
+    this.gdriveService.setCurrentFile(file);
+  }
+
   private updateOpenedFolder(folder: GdriveFile): void {
 
     const foldersObservable = this.gdriveService.getSubFolders(folder);

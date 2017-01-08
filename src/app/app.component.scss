@@ -1,4 +1,20 @@
-content {
-  margin: 30px 30px 30px 225px;
-  min-height: calc(100vh - 188px);
+@import "../variables";
+
+$content-margin: 20px;
+
+app-header {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 99;
 }
+
+content {
+  margin: calc(#{$header-height + $content-margin}) 30px 0 225px;
+
+  .main-container {
+    min-height: calc(100vh - (2 * #{$header-height} + #{$content-margin}));
+  }
+}
+

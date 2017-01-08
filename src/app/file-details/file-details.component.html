@@ -1,0 +1,32 @@
+<div *ngIf="file">
+
+  <md-toolbar class="md-elevation-z4">
+    <span class="text-ellipsis">{{file.name}}</span>
+    <span class="fill-remaining-space"></span>
+    <button md-button class="close-button">
+      <md-icon>clear</md-icon>
+    </button>
+  </md-toolbar>
+
+  <md-list class="details-content">
+
+    <md-list-item class="date-container">
+      <span class="title">Fecha</span>
+      <span class="fill-remaining-space"></span>
+      <md-input-container>
+        <input md-input type="date" [(ngModel)]="file.date" name="date">
+      </md-input-container>
+    </md-list-item>
+
+    <md-divider></md-divider>
+
+    <md-list-item class="tags-container">
+      <div class="title">Categorías</div>
+      <md-chip-list>
+        <md-chip *ngFor="let category of file.categories" selected="true" color="primary">
+          {{category.getPath()}}
+        </md-chip>
+      </md-chip-list>
+    </md-list-item>
+  </md-list>
+</div>

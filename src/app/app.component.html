@@ -1,7 +1,16 @@
 <app-header></app-header>
 
-<content id="main-content">
-  <router-outlet></router-outlet>
-</content>
+<md-sidenav-container class="example-sidenav-fab-container">
+  <content>
+    <div class="main-container">
+      <router-outlet></router-outlet>
+    </div>
 
-<app-footer></app-footer>
+    <app-footer></app-footer>
+  </content>
+
+  <md-sidenav #sidenav mode="side" align="end">
+    <router-outlet class="sidebar" name="sidebar"></router-outlet>
+  </md-sidenav>
+</md-sidenav-container>
+
