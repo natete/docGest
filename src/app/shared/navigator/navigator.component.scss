@@ -1,3 +1,6 @@
+$alternate-image-size: 70px;
+$card-margin: 5px;
+
 md-progress-spinner {
   position: absolute;
   top: calc(50% - 50px);
@@ -7,31 +10,66 @@ md-progress-spinner {
 .title {
   font-size: 12px;
   color: gray;
+  padding-left: 5px;
+  margin-bottom: 10px;
 }
 
 md-grid-tile {
-  margin-bottom: 5px;
-}
+  overflow: visible;
 
-.folder-card {
-  font-weight: lighter;
-  padding: 5px;
-  width: 100%;
-  cursor: default;
+  .card-container {
+    margin: $card-margin;
+    width: calc(100% - 2 * #{$card-margin});
 
-  &.selected {
-    background-color: #536DFE;
-    color: white;
+    .item-card {
+      font-weight: lighter;
+      padding: 5px;
+      width: 100%;
+      cursor: default;
+      padding: 0;
+      align-self: flex-start;
 
-    md-icon {
-      color: white;
+      &.selected {
+        background-color: #536DFE;
+        color: white;
+        box-shadow: 4px 4px 8px 0 rgba(0, 0, 0, .5);
+        font-weight: normal;
+
+        md-icon {
+          color: white !important;
+        }
+      }
+
+      .preview-container,
+      .alternate-image {
+        max-width: 100%;
+        margin: 0;
+        height: 150px;
+        display: flex;
+        align-items: flex-start;
+        overflow: hidden;
+
+        md-icon {
+          font-size: $alternate-image-size;
+          height: $alternate-image-size;
+          width: $alternate-image-size;
+          margin: auto;
+          color: gray;
+        }
+      }
+
+      md-card-content {
+        padding: 5px;
+        line-height: 24px;
+
+        md-icon {
+          color: gray;
+          vertical-align: bottom;
+          margin-right: 10px;
+          cursor: default;
+        }
+      }
     }
   }
-
-  md-icon {
-    color: gray;
-    vertical-align: bottom;
-    margin-right: 10px;
-    cursor: default;
-  }
 }
+

@@ -1,15 +1,34 @@
-<md-progress-spinner *ngIf="loading" [mode]="'indeterminate'"></md-progress-spinner>
-<div *ngIf="!loading">
-  <div class="title">{{title}}</div>
-  <md-grid-list cols="4" rowHeight="45px" gutterSize="10px" *ngIf="!loading">
-    <md-grid-tile *ngFor="let item of items" [colspan]="1">
-      <md-card class="folder-card text-ellipsis"
-               (click)="onClick(item)"
-               (dblclick)="onDblClick(item)"
-               [class.selected]="item.selected">
-        <md-icon>{{icon}}</md-icon>
-        {{item.name}}
-      </md-card>
-    </md-grid-tile>
-  </md-grid-list>
+<div #container>
+  <div>
+    <div class="title">{{title}}</div>
+    <md-grid-list cols="{{columns}}"
+                  rowHeight="{{showThumbnail ? '200px' : '45px'}}"
+                  gutterSize="10px">
+
+      <md-grid-tile *ngFor="let item of items" [colspan]="1">
+
+        <div class="card-container">
+          <md-card class="item-card"
+                   (click)="onClick(item)"
+                   (dblclick)="onDblClick(item)"
+                   [class.selected]="item.selected">
+
+            <div class="preview-container" *ngIf="showThumbnail && item.thumbnailLink">
+              <img md-card-image src="{{item.thumbnailLink + '-w200-h150'}}" alt="document-preview">
+            </div>
+
+            <div class="alternate-image" *ngIf="showThumbnail && !item.thumbnailLink">
+              <md-icon>description</md-icon>
+            </div>
+
+            <md-card-content class="text-ellipsis">
+              <md-icon>{{icon}}</md-icon>
+              {{item.name}}
+            </md-card-content>
+
+          </md-card>
+        </div>
+      </md-grid-tile>
+    </md-grid-list>
+  </div>
 </div>

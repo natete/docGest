@@ -1,26 +1,18 @@
 <h3 class="opened-folder">{{parentFolder ? parentFolder.name : ''}}</h3>
+<md-progress-spinner *ngIf="loading" [mode]="'indeterminate'"></md-progress-spinner>
 
-<div class="explorer-container">
-  <md-grid-list cols="1" rowHeight="50%" gutterSize="10px">
-    <md-grid-tile [colspan]="1">
+<div class="explorer-container" *ngIf="!loading">
       <app-navigator [items]="folders"
                      [icon]="'folder'"
                      [title]="'Carpetas'"
-                     [loading]="loading"
+                     *ngIf="!loading && folders.length"
                      (itemDblClicked)="openFolder($event)">
       </app-navigator>
-    </md-grid-tile>
-    <md-grid-tile [colspan]="1">
       <app-navigator [items]="files"
                      [icon]="'insert_drive_file'"
                      [title]="'Archivos'"
-                     [loading]="loading"
+                     [showThumbnail]="true"
+                     *ngIf="!loading && files.length"
                      (itemClicked)="toggleSelection($event)">
       </app-navigator>
-    </md-grid-tile>
-  </md-grid-list>
 </div>
-
-<button md-fab [disabled]="!selectedItem">
-  <md-icon>add</md-icon>
-</button>

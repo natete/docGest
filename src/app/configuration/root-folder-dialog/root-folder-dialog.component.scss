@@ -14,3 +14,9 @@
     margin-right: 10px;
   }
 }
+
+md-progress-spinner {
+  position: fixed;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+}

@@ -19,14 +19,13 @@ export class ExploreComponent extends SelectionComponent implements OnInit {
   constructor(private exploreService: ExploreService,
               private changeDetector: ChangeDetectorRef) {
     super();
+  }
 
+  ngOnInit() {
     const subscription = this.exploreService.folder()
         .subscribe(response => this.mapFolderResponse(response));
 
     this.addSubscription(subscription);
-  }
-
-  ngOnInit() {
   }
 
   openFolder(folder: GdriveFile) {

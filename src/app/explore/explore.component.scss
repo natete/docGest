@@ -1,6 +1,12 @@
 $title-font-size: 22px;
 $title-margin: 20px;
 
+md-progress-spinner {
+  position: fixed;
+  top: calc(50% - 50px);
+  left: calc(50% - 50px);
+}
+
 .opened-folder {
   font-size: $title-font-size;
   margin: 0 0 $title-margin 0;
@@ -9,8 +15,8 @@ $title-margin: 20px;
 .explorer-container {
   height: calc(100% - (#{$title-font-size} + #{$title-margin}));
 
-  md-grid-tile {
-    overflow-y: auto;
+  app-navigator:first-child {
+    margin-bottom: 20px;
   }
 }
 

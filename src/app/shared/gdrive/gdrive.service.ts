@@ -3,7 +3,7 @@ import { Observable, Subject } from 'rxjs';
 import { GdriveFile } from './gdrive-file';
 
 const CLIENT_ID = '714707421933-9nqjome3tjml56epmet0c860c43tbjnt.apps.googleusercontent.com';
-const SCOPES = ['https://www.googleapis.com/auth/drive.metadata.readonly'];
+const SCOPES = ['https://www.googleapis.com/auth/drive.readonly'];
 const FOLDER_MIME_TYPE = 'mimeType=\'application/vnd.google-apps.folder\'';
 const FILE_MIME_TYPE = 'mimeType!=\'application/vnd.google-apps.folder\'';
 const FOLDER_PARENT = '\'{0}\' in parents';
@@ -15,7 +15,6 @@ export class GdriveService {
   private authState: Subject<GoogleApiOAuth2TokenObject> = new Subject<GoogleApiOAuth2TokenObject>();
 
   constructor() {
-    gapi.client.load('drive', 'v3');
   }
 
   init(): void {
@@ -71,7 +70,8 @@ export class GdriveService {
 
     const params = {
       q: q,
-      orderBy: 'name'
+      orderBy: 'name',
+      fields: 'files(id,name,mimeType,thumbnailLink)'
     };
 
     gapi.client.drive.files.list(params).execute(response => files.next(response.result.files || []));

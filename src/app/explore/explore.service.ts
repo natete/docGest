@@ -2,12 +2,12 @@ import { Injectable } from '@angular/core';
 import { GdriveService } from '../shared/gdrive/gdrive.service';
 import { AngularFireDatabase } from 'angularfire2';
 import { GdriveFile } from '../shared/gdrive/gdrive-file';
-import { Observable, Subject } from 'rxjs';
+import { Observable, ReplaySubject } from 'rxjs';
 
 @Injectable()
 export class ExploreService {
   private baseFolder: Observable<GdriveFile>;
-  private openedFolder = new Subject<any>();
+  private openedFolder = new ReplaySubject<any>(1);
   private configBaseFolderId: string;
 
   constructor(private database: AngularFireDatabase,

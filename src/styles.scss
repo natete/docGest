@@ -16,31 +16,12 @@ content,
 footer,
 header,
 nav,
-section
-app-search {
+section {
   display: block;
 }
 
 content {
   position: relative;
-}
-
-app-configuration {
-  display: flex;
-}
-
-app-explore {
-  display: block;
-  height: 100%;
-  width: 100%;
-  position: absolute;
-}
-
-app-navigator {
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  top: 0;
 }
 
 button[md-mini-fab].xs-fab {
@@ -63,4 +44,25 @@ button[md-mini-fab].xs-fab {
 
 md-dialog-container {
   background-color: $background-color;
+}
+
+app-configuration {
+  display: flex;
+  margin-right: 200px;
+}
+
+app-explore {
+  display: block;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+}
+
+app-navigator {
+  width: 100%;
+  display: block;
+}
+
+app-search {
+  display: block;
 }
