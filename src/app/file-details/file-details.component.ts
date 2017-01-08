@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Category } from '../categories/category';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { FileDetails } from './file-details';
 import { FileDetailsService } from './file-details.service';
 import { BaseComponent } from '../core/base.component';
@@ -16,7 +16,8 @@ export class FileDetailsComponent extends BaseComponent implements OnInit {
   file: FileDetails;
 
   constructor(private route: ActivatedRoute,
-              private fileDetailsService: FileDetailsService) {
+              private fileDetailsService: FileDetailsService,
+              private router: Router) {
     super();
 
     this.fileDetailsService.file.subscribe(file => {
@@ -46,5 +47,9 @@ export class FileDetailsComponent extends BaseComponent implements OnInit {
 
   updateFile(fileId: string) {
     this.fileDetailsService.updateFileId(fileId);
+  }
+
+  closeDetails() {
+    this.router.navigate([{ outlets: { sidebar: null } }]);
   }
 }
