@@ -9,7 +9,7 @@
   </md-toolbar>
 
   <md-list class="details-content">
-
+    <h3 md-subheader>Información general</h3>
     <md-list-item class="date-container">
       <span class="title">Fecha</span>
       <span class="fill-remaining-space"></span>
@@ -20,13 +20,16 @@
 
     <md-divider></md-divider>
 
+    <h3 md-subheader>Categorías</h3>
     <md-list-item class="tags-container">
-      <div class="title">Categorías</div>
-      <md-chip-list>
-        <md-chip *ngFor="let category of file.categories" selected="true" color="primary">
-          {{category.getPath()}}
-        </md-chip>
-      </md-chip-list>
+      <md-list dense>
+        <md-list-item *ngFor="let category of categories">
+          <md-slide-toggle [checked]="file.categories.indexOf(category.$key) !== -1"
+                           (change)="toggleCategory(category)"
+                           [style.margin-left]="getMargin(category)"></md-slide-toggle>
+          <span>{{category.name}}</span>
+        </md-list-item>
+      </md-list>
     </md-list-item>
   </md-list>
 </div>

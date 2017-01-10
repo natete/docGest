@@ -22,6 +22,7 @@ export class Category implements Persistible {
         .split(',')
         .filter(str => !!str)
         .reverse()
+        .concat(this.name)
         .join(' - ');
   }
 
@@ -55,6 +56,14 @@ export class Category implements Persistible {
 
   hasParent(): boolean {
     return !!this.path;
+  }
+
+  getNumberOfParents(): number {
+    return this.namesPath
+        .substring(1, this.path.length - 1)
+        .split(',')
+        .filter(str => !!str)
+        .length;
   }
 
   toDbObject(): any {

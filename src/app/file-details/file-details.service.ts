@@ -14,13 +14,16 @@ export class FileDetailsService {
   private fileId: string;
   private currentKey: string;
 
-  categories: FirebaseListObservable<Category[]>;
+  categories: Observable<Category[]>;
   file: Observable<FileDetails> = this.fileSubject.asObservable();
 
   constructor(private database: AngularFireDatabase,
               private gdriveService: GdriveService) {
 
-    this.categories = this.database.list('/categories');
+    this.categories = this.database.list('/categories')
+        .map(dbCategories => dbCategories.map(dbCategory => new Category(dbCategory)));
+    // .map(categories => new CategoryTree(categories))
+    // .map(categoryTree => categoryTree.categories);
 
     this.query.subscribe(fileId => this.fileId = fileId);
 
@@ -49,9 +52,9 @@ export class FileDetailsService {
 
   saveFile(file: FileDetails) {
     if (this.currentKey) {
-      this.files.update(this.currentKey, file);
+      this.files.update(this.currentKey, file.toDbObject());
     } else {
-      this.files.push(file);
+      this.files.push(file.toDbObject());
     }
   }
 

@@ -24,6 +24,9 @@ export class FileDetailsComponent extends BaseComponent implements OnInit {
       this.file = file;
       // this.changeDetectorRef.detectChanges();
     });
+
+    this.fileDetailsService.categories
+        .subscribe(categories => this.categories = categories);
   }
 
   ngOnInit() {
@@ -51,5 +54,18 @@ export class FileDetailsComponent extends BaseComponent implements OnInit {
 
   closeDetails() {
     this.router.navigate([{ outlets: { sidebar: null } }]);
+  }
+
+  toggleCategory(category: Category) {
+    const index = this.file.categories.indexOf(category.$key);
+    if (index === -1) {
+      this.file.categories.push(category.$key)
+    } else {
+      this.file.categories.splice(index, 1);
+    }
+  }
+
+  getMargin(category: Category): string {
+    return `${-25 + 20 * category.getNumberOfParents()}px`;
   }
 }
