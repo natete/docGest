@@ -20,12 +20,16 @@ export class FileDetailsComponent extends BaseComponent implements OnInit {
               private router: Router) {
     super();
 
-    this.fileDetailsService.file.subscribe(file => {
+    const fileSubscription = this.fileDetailsService.file.subscribe(file => {
       file ? this.file = file : null;
     });
 
-    this.fileDetailsService.categories
+    this.addSubscription(fileSubscription);
+
+    const categoriesSubscription = this.fileDetailsService.categories
         .subscribe(categories => this.categories = categories);
+
+    this.addSubscription(categoriesSubscription);
   }
 
   ngOnInit() {
