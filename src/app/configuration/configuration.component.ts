@@ -16,13 +16,13 @@ export class ConfigurationComponent extends BaseComponent implements OnInit {
   configuration: Configuration = new Configuration();
 
   constructor(private configurationService: ConfigurationService,
-              private changeDetector: ChangeDetectorRef,
+              private changeDetectorRef: ChangeDetectorRef,
               private dialog: MdDialog) {
     super();
 
     const authSubscription = this.configurationService.isAuthorized().subscribe(isAuthorized => {
       this.isAuthorized = isAuthorized;
-      this.changeDetector.detectChanges();
+      this.changeDetectorRef.detectChanges();
     });
 
     const configSubscription = this.configurationService

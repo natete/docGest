@@ -1,6 +1,7 @@
 import { Component, Input, Output, EventEmitter, AfterViewInit, ViewChild, ElementRef, ChangeDetectorRef } from '@angular/core';
 import { GdriveFile } from '../gdrive/gdrive-file';
 import { ContentSizeService } from './content-size.service';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-navigator',
@@ -9,7 +10,7 @@ import { ContentSizeService } from './content-size.service';
 })
 export class NavigatorComponent implements AfterViewInit {
 
-  @Input() items: GdriveFile[];
+  @Input() items: Observable<GdriveFile[]>;
   @Input() icon: string;
   @Input() title: string;
   @Input() showThumbnail: boolean;

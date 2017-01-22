@@ -1,18 +1,16 @@
 <h3 class="opened-folder">{{parentFolder ? parentFolder.name : ''}}</h3>
-<md-progress-spinner *ngIf="loading" [mode]="'indeterminate'"></md-progress-spinner>
+<md-progress-spinner *ngIf="isLoading | async" [mode]="'indeterminate'"></md-progress-spinner>
 
-<div class="explorer-container" *ngIf="!loading">
+<div class="explorer-container">
       <app-navigator [items]="folders"
                      [icon]="'folder'"
                      [title]="'Carpetas'"
-                     *ngIf="!loading && folders.length"
                      (itemDblClicked)="openFolder($event)">
       </app-navigator>
       <app-navigator [items]="files"
                      [icon]="'insert_drive_file'"
                      [title]="'Archivos'"
                      [showThumbnail]="true"
-                     *ngIf="!loading && files.length"
                      (itemClicked)="toggleSelection($event)">
       </app-navigator>
 </div>

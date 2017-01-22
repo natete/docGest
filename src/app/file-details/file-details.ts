@@ -8,7 +8,7 @@ export class FileDetails implements Persistible {
   categories: Array<string>;
 
   constructor(dbFile?: any) {
-    this.$key = dbFile.$key || null;
+    this.$key = dbFile.$key || dbFile.id;
     this.id = dbFile.id || null;
     this.name = dbFile.name || null;
     this.date = dbFile.date || null;

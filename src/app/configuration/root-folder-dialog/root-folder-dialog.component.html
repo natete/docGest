@@ -1,7 +1,7 @@
 <h1 md-dialog-title>Seleccione directorio raíz</h1>
-<md-progress-spinner *ngIf="loading" [mode]="'indeterminate'"></md-progress-spinner>
+<md-progress-spinner *ngIf="isLoading | async" [mode]="'indeterminate'"></md-progress-spinner>
 
-<div md-dialog-content *ngIf="!loading">
+<div md-dialog-content>
   <app-navigator [items]="folders"
                  [icon]="'folder'"
                  (itemClicked)="toggleSelection($event)"

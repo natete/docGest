@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2';
+import { Observable, Subject } from 'rxjs';
 import { Category } from '../categories/category';
-import { Subject, Observable, ReplaySubject } from 'rxjs';
 import { FileDetails } from './file-details';
 import { GdriveService } from '../shared/gdrive/gdrive.service';
 
@@ -9,57 +9,55 @@ import { GdriveService } from '../shared/gdrive/gdrive.service';
 export class FileDetailsService {
 
   private files: FirebaseListObservable<FileDetails[]>;
-  private query: ReplaySubject<string> = new ReplaySubject<string>(1);
-  private fileSubject = new Subject<FileDetails>();
+  private query: Subject<string> = new Subject<string>();
   private fileId: string;
-  private currentKey: string;
+  private fileIds: string[];
 
   categories: Observable<Category[]>;
-  file: Observable<FileDetails> = this.fileSubject.asObservable();
+  file: Observable<FileDetails>;
 
   constructor(private database: AngularFireDatabase,
               private gdriveService: GdriveService) {
 
     this.categories = this.database.list('/categories')
         .map(dbCategories => dbCategories.map(dbCategory => new Category(dbCategory)));
-    // .map(categories => new CategoryTree(categories))
-    // .map(categoryTree => categoryTree.categories);
-
-    this.query.subscribe(fileId => this.fileId = fileId);
 
     this.files = this.database.list('/files');
 
-    this.database
-        .list('/files', { query: { orderByChild: 'id', equalTo: this.query } })
-        .map(files => files[0])
-        .subscribe(file => {
+    this.database.list('/files')
+        .map(files => {
+          return files.map(file => file.id);
+        })
+        .subscribe(filesIds => {
+          this.fileIds = filesIds;
+        });
+
+    this.file = this.database
+        .list('/files', { query: { orderByKey: true, equalTo: this.query } })
+        .map(files => {
+          const file = files[0];
           if (file) {
-            this.currentKey = file.$key;
-            this.fileSubject.next(new FileDetails(file));
-          } else {
-            this.getGdriveFile();
+            return new FileDetails(file);
+          } else if (this.fileIds.indexOf(this.fileId) === -1) {
+            this.gdriveService.openFile(this.fileId)
+          }
+        });
+
+    this.gdriveService.file
+        .map(gdriveFile => new FileDetails(gdriveFile))
+        .subscribe(file => {
+          if (this.fileIds.indexOf(file.id) === -1) {
+            this.saveFile(file);
           }
         });
   }
 
-  getGdriveFile(): void {
-    this.gdriveService.getFile(this.fileId)
-        .subscribe(gdriveFile => {
-          this.currentKey = null;
-          this.fileSubject.next(new FileDetails(gdriveFile));
-        });
-  }
-
-  saveFile(file: FileDetails) {
-    if (this.currentKey) {
-      this.files.update(this.currentKey, file.toDbObject());
-    } else {
-      this.files.push(file.toDbObject());
-    }
+  saveFile(file: FileDetails): firebase.Promise<void> {
+    return this.files.update(file.$key, file.toDbObject());
   }
 
   updateFileId(id: string) {
+    this.fileId = id;
     this.query.next(id);
   }
-
 }

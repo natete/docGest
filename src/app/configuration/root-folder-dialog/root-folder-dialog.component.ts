@@ -1,8 +1,10 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { GdriveService } from '../../shared/gdrive/gdrive.service';
 import { GdriveFile } from '../../shared/gdrive/gdrive-file';
 import { MdDialogRef } from '@angular/material';
 import { SelectionComponent } from '../../shared/selection-component';
+import { Observable, Subject } from 'rxjs';
+import { SpinnerService } from '../../shared/spinner/spinner.service';
 
 @Component({
   selector: 'app-root-folder-dialog',
@@ -11,13 +13,33 @@ import { SelectionComponent } from '../../shared/selection-component';
 })
 export class RootFolderDialogComponent extends SelectionComponent implements OnInit {
 
-  folders: GdriveFile[];
-  loading: boolean = true;
+  private foldersStream: Subject<GdriveFile[]> = new Subject<GdriveFile[]>();
+  folders: Observable<GdriveFile[]> = this.foldersStream.asObservable();
+  openedFolder: GdriveFile;
+  isLoading: Observable<boolean>;
 
   constructor(private gdriveService: GdriveService,
-              private changeDetector: ChangeDetectorRef,
-              private dialogRef: MdDialogRef<RootFolderDialogComponent>) {
+              private zone: NgZone,
+              private dialogRef: MdDialogRef<RootFolderDialogComponent>,
+              private spinnerService: SpinnerService) {
     super();
+
+    this.gdriveService.folders
+        .subscribe(folders => {
+          let result: GdriveFile[];
+          if (this.openedFolder && this.openedFolder.id !== 'root') {
+            const parentFolder = new GdriveFile({ id: this.openedFolder.parentId, name: '..' });
+            result = [parentFolder].concat(folders);
+          } else {
+            result = folders;
+          }
+
+          this.zone.run(() => {
+            this.foldersStream.next(result);
+          });
+        });
+
+    this.isLoading = this.spinnerService.isLoading;
   }
 
   ngOnInit() {
@@ -26,22 +48,12 @@ export class RootFolderDialogComponent extends SelectionComponent implements OnI
 
   toggleSelection(item): void {
     super.toggleSelection(item);
-    this.changeDetector.detectChanges();
   }
 
   openFolder(folder?): void {
-    this.loading = true;
-    this.changeDetector.detectChanges();
-    this.gdriveService.getSubFolders(folder).subscribe(folders => {
-      if (folder) {
-        folder.name = '';
-        this.folders = [folder].concat(folders);
-      } else {
-        this.folders = folders;
-      }
-      this.loading = false;
-      this.changeDetector.detectChanges();
-    });
+    this.openedFolder = folder;
+
+    this.gdriveService.setOpenedFolder(folder);
   }
 
   save(): void {

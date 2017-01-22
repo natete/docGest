@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { CategoriesModule } from './categories/categories.module';
 import { ConfigurationModule } from './configuration/configuration.module';
 import { ExploreModule } from './explore/explore.module';
+import { SpinnerService } from './shared/spinner/spinner.service';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,7 @@ import { ExploreModule } from './explore/explore.module';
     ExploreModule,
     MaterialModule.forRoot()
   ],
-  providers: [],
+  providers: [SpinnerService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

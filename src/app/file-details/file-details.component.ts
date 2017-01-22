@@ -21,8 +21,7 @@ export class FileDetailsComponent extends BaseComponent implements OnInit {
     super();
 
     this.fileDetailsService.file.subscribe(file => {
-      this.file = file;
-      // this.changeDetectorRef.detectChanges();
+      file ? this.file = file : null;
     });
 
     this.fileDetailsService.categories
@@ -33,10 +32,11 @@ export class FileDetailsComponent extends BaseComponent implements OnInit {
     const subscription = this.route.params
         .subscribe(params => {
           if (this.file) {
-            this.fileDetailsService.saveFile(this.file);
+            this.fileDetailsService.saveFile(this.file)
+                .then(() => this.updateFile(params['file']));
+          } else {
+            this.updateFile(params['file']);
           }
-
-          this.updateFile(params['file']);
         });
 
     this.addSubscription(subscription);
@@ -44,7 +44,6 @@ export class FileDetailsComponent extends BaseComponent implements OnInit {
 
   ngOnDestroy() {
     super.ngOnDestroy();
-    // this.changeDetectorRef.detach();
     this.fileDetailsService.saveFile(this.file);
   }
 

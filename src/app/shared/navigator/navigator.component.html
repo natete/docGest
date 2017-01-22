@@ -5,13 +5,13 @@
                   rowHeight="{{showThumbnail ? '200px' : '45px'}}"
                   gutterSize="10px">
 
-      <md-grid-tile *ngFor="let item of items" [colspan]="1">
+      <md-grid-tile *ngFor="let item of items | async" [colspan]="1">
 
         <div class="card-container">
           <md-card class="item-card"
                    (click)="onClick(item)"
                    (dblclick)="onDblClick(item)"
-                   [class.selected]="item.selected">
+                   [ngClass]="{ selected: item.selected}">
 
             <div class="preview-container" *ngIf="showThumbnail && item.thumbnailLink">
               <img md-card-image src="{{item.thumbnailLink + '-w200-h150'}}" alt="document-preview">

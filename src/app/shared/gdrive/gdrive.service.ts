@@ -1,6 +1,7 @@
-import { Injectable } from '@angular/core';
-import { Observable, Subject, ReplaySubject } from 'rxjs';
+import { Injectable, NgZone } from '@angular/core';
+import { Observable, Subject } from 'rxjs';
 import { GdriveFile } from './gdrive-file';
+import { SpinnerService } from '../spinner/spinner.service';
 
 const CLIENT_ID = '714707421933-9nqjome3tjml56epmet0c860c43tbjnt.apps.googleusercontent.com';
 const SCOPES = ['https://www.googleapis.com/auth/drive.readonly'];
@@ -14,8 +15,23 @@ export class GdriveService {
 
   private authState: Subject<GoogleApiOAuth2TokenObject> = new Subject<GoogleApiOAuth2TokenObject>();
   private currentFile: GdriveFile;
+  private currentFolderStream: Subject<any> = new Subject<any>();
+  private foldersStream: Subject<GdriveFile[]> = new Subject<GdriveFile[]>();
+  folders: Observable<GdriveFile[]> = this.foldersStream.asObservable();
+  private filesStream: Subject<GdriveFile[]> = new Subject<GdriveFile[]>();
+  files: Observable<GdriveFile[]> = this.filesStream.asObservable();
+  private fileStream: Subject<GdriveFile> = new Subject<GdriveFile>();
+  file: Observable<GdriveFile> = this.fileStream.asObservable();
 
-  constructor() {
+
+  constructor(private zone: NgZone,
+              private spinnerService: SpinnerService) {
+    this.currentFolderStream.subscribe(update => {
+      this.updateFolders(update.folder);
+      if (update.updateFiles) {
+        this.updateFiles(update.folder);
+      }
+    });
   }
 
   init(): void {
@@ -25,6 +41,7 @@ export class GdriveService {
       immediate: true
     };
 
+    this.spinnerService.addLoadingThread();
     gapi.auth.authorize(authConfig, (authResult) => this.manageAuth(authResult));
   }
 
@@ -43,8 +60,41 @@ export class GdriveService {
     return this.mapAuthStateToBoolean();
   }
 
-  getSubFolders(folder?: GdriveFile): Observable<GdriveFile[]> {
-    const folders: Subject<gapi.client.drive.File[]> = new Subject<gapi.client.drive.File[]>();
+  setOpenedFolder(folder?: GdriveFile, updateFiles?: boolean): void {
+    this.currentFolderStream.next({ folder: folder, updateFiles: updateFiles });
+  }
+
+  openFile(fileId: string): void {
+    if (this.currentFile && this.currentFile.id === fileId) {
+      this.fileStream.next(this.currentFile);
+    } else {
+      this.spinnerService.addLoadingThread();
+      const params = {
+        fileId: fileId,
+        fields: 'id,name,mimeType,thumbnailLink'
+      };
+
+      gapi.client.drive.files.get(params).execute(response => {
+        if (!!response && response.result) {
+          const requestedFile = new GdriveFile(response.result);
+          this.zone.run(() => {
+            this.fileStream.next(requestedFile);
+            this.currentFile = requestedFile;
+            this.spinnerService.removeLoadingThread();
+          });
+        } else {
+          this.zone.run(() => this.spinnerService.removeLoadingThread());
+        }
+      });
+    }
+  }
+
+  setCurrentFile(file: GdriveFile): void {
+    this.fileStream.next(file);
+  }
+
+  private updateFolders(folder?: GdriveFile): void {
+    this.spinnerService.addLoadingThread();
 
     const openedFolder: GdriveFile = this.getOpenedFolderId(folder);
 
@@ -55,17 +105,23 @@ export class GdriveService {
       orderBy: 'name'
     };
 
-    gapi.client.drive.files.list(params).execute(response => folders.next(response.result.files || []));
-
-    return folders
-        .asObservable()
-        .map(folders => {
-          return this.mapToGdriveFiles(folders, openedFolder);
+    gapi.client.drive.files.list(params)
+        .execute(response => {
+          if (!!response && response.result) {
+            const responseFolders = response.result.files || [];
+            const mappedFolders = this.mapToGdriveFiles(responseFolders, openedFolder);
+            this.zone.run(() => {
+              this.foldersStream.next(mappedFolders);
+              this.spinnerService.removeLoadingThread();
+            });
+          } else {
+            this.zone.run(() => this.spinnerService.removeLoadingThread());
+          }
         });
   }
 
-  getFiles(folder: GdriveFile): Observable<GdriveFile[]> {
-    const files: Subject<gapi.client.drive.File[]> = new Subject<gapi.client.drive.File[]>();
+  private updateFiles(folder?: GdriveFile): void {
+    this.spinnerService.addLoadingThread();
 
     const q = this.getFileQuery(folder);
 
@@ -75,32 +131,19 @@ export class GdriveService {
       fields: 'files(id,name,mimeType,thumbnailLink)'
     };
 
-    gapi.client.drive.files.list(params).execute(response => files.next(response.result.files || []));
-
-    return files
-        .asObservable()
-        .map(files => this.mapToGdriveFiles(files));
-  }
-
-  setCurrentFile(file: GdriveFile): void {
-    this.currentFile = file;
-  }
-
-  getFile(fileId: string): Observable<GdriveFile> {
-    const result = new ReplaySubject<GdriveFile>(1);
-
-    if (this.currentFile && this.currentFile.id === fileId) {
-      result.next(this.currentFile);
-    } else {
-      const params = {
-        fileId: fileId,
-        fields: 'id,name,mimeType,thumbnailLink'
-      };
-
-      gapi.client.drive.files.get(params).execute(response => result.next(new GdriveFile(response.result)));
-    }
-
-    return result.asObservable();
+    gapi.client.drive.files.list(params)
+        .execute(response => {
+          if (!!response && response.result) {
+            const responseFolders = response.result.files || [];
+            const mappedFolders = this.mapToGdriveFiles(responseFolders);
+            this.zone.run(() => {
+              this.filesStream.next(mappedFolders);
+              this.spinnerService.removeLoadingThread();
+            });
+          } else {
+            this.zone.run(() => this.spinnerService.removeLoadingThread());
+          }
+        });
   }
 
   private getOpenedFolderId(openedFolder?: GdriveFile): GdriveFile {
@@ -111,7 +154,7 @@ export class GdriveService {
     }
   }
 
-  private getFolderQuery(parentFolder?: gapi.client.drive.File) {
+  private getFolderQuery(parentFolder?: GdriveFile) {
     const queries = [];
     queries.push(FOLDER_MIME_TYPE);
     queries.push(FOLDER_PARENT.replace('{0}', parentFolder ? parentFolder.id : 'root'));
@@ -127,7 +170,7 @@ export class GdriveService {
     return queries.join(' and ');
   }
 
-  private mapToGdriveFiles(folders, parentFolder?: GdriveFile) {
+  private mapToGdriveFiles(folders, parentFolder?: GdriveFile): GdriveFile[] {
     return folders.map(folder => new GdriveFile(folder, parentFolder));
   }
 
@@ -137,6 +180,7 @@ export class GdriveService {
     } else {
       this.authState.next(null);
     }
+    this.spinnerService.removeLoadingThread();
   }
 
   private mapAuthStateToBoolean(): Observable<boolean> {
