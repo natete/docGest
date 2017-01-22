@@ -1,4 +1,4 @@
-import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BaseComponent } from '../core/base.component';
 import { ConfigurationService } from './configuration.service';
 import { MdDialog, MdDialogConfig } from '@angular/material';
@@ -16,14 +16,11 @@ export class ConfigurationComponent extends BaseComponent implements OnInit {
   configuration: Configuration = new Configuration();
 
   constructor(private configurationService: ConfigurationService,
-              private changeDetectorRef: ChangeDetectorRef,
               private dialog: MdDialog) {
     super();
 
-    const authSubscription = this.configurationService.isAuthorized().subscribe(isAuthorized => {
-      this.isAuthorized = isAuthorized;
-      this.changeDetectorRef.detectChanges();
-    });
+    const authSubscription = this.configurationService.isAuthorized()
+        .subscribe(isAuthorized => this.isAuthorized = isAuthorized);
 
     const configSubscription = this.configurationService
         .getGdriveConfiguration()

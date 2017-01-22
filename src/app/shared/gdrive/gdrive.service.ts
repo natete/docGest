@@ -26,8 +26,10 @@ export class GdriveService {
 
   constructor(private zone: NgZone,
               private spinnerService: SpinnerService) {
+
     this.currentFolderStream.subscribe(update => {
       this.updateFolders(update.folder);
+
       if (update.updateFiles) {
         this.updateFiles(update.folder);
       }
@@ -175,12 +177,14 @@ export class GdriveService {
   }
 
   private manageAuth(authResult: GoogleApiOAuth2TokenObject) {
-    if (authResult && !authResult.error) {
-      this.authState.next(authResult);
-    } else {
-      this.authState.next(null);
-    }
-    this.spinnerService.removeLoadingThread();
+    this.zone.run(() => {
+      if (authResult && !authResult.error) {
+        this.authState.next(authResult);
+      } else {
+        this.authState.next(null);
+      }
+      this.spinnerService.removeLoadingThread();
+    });
   }
 
   private mapAuthStateToBoolean(): Observable<boolean> {
